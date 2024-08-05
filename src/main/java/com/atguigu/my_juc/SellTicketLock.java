@@ -16,6 +16,7 @@ class TicketLock {
             if (totalTickets > 0) {
                 // 打印当前售票员销售的票号
                 System.out.println(Thread.currentThread().getName() + " sold ticket number: " + totalTickets);
+                this.warning();
                 totalTickets--; // 减少票数
             } else if (!soldOut) {
                 // 打印票已售罄的信息，设置售罄标志
@@ -25,6 +26,12 @@ class TicketLock {
         } finally {
             lock.unlock();
         }
+    }
+
+    private void warning() {
+        lock.lock();
+        System.out.println("抓到黄牛，腿给你敲折");
+        lock.unlock();
     }
 
     // 获取剩余票数
