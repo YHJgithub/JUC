@@ -40,13 +40,11 @@ class TicketSeller extends Thread {
     @Override
     public void run() {
         while (true) {
-            synchronized (Object.class) { // 同步块，控制售票流程
-                // 检查票是否已售罄
-                if (ticket.getTotalTickets() <= 0 && ticket.isSoldOut()) {
-                    break; // 如果票已售罄，退出循环
-                }
-                ticket.sellTicket(); // 调用售票方法
+            // 检查票是否已售罄
+            if (ticket.getTotalTickets() <= 0 && ticket.isSoldOut()) {
+                break; // 如果票已售罄，退出循环
             }
+            ticket.sellTicket(); // 调用售票方法
         }
     }
 }
