@@ -1,19 +1,29 @@
 package com.atguigu.my_juc;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 class TicketLock {
+
+    private final ReentrantLock lock = new ReentrantLock(true);
+
     private int totalTickets = 50; // 总票数
     private boolean soldOut = false; // 是否售罄的标志
 
     // 同步方法、售票
-    public synchronized void sellTicket() {
-        if (totalTickets > 0) {
-            // 打印当前售票员销售的票号
-            System.out.println(Thread.currentThread().getName() + " sold ticket number: " + totalTickets);
-            totalTickets--; // 减少票数
-        } else if (!soldOut) {
-            // 打印票已售罄的信息，设置售罄标志
-            System.out.println("No tickets left to sell.");
-            soldOut = true; // 标记为售罄
+    public void sellTicket() {
+        lock.lock();
+        try {
+            if (totalTickets > 0) {
+                // 打印当前售票员销售的票号
+                System.out.println(Thread.currentThread().getName() + " sold ticket number: " + totalTickets);
+                totalTickets--; // 减少票数
+            } else if (!soldOut) {
+                // 打印票已售罄的信息，设置售罄标志
+                System.out.println("No tickets left to sell.");
+                soldOut = true; // 标记为售罄
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
